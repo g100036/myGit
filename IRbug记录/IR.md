@@ -48,4 +48,53 @@
 
 + 数据获取正常
 + 数据传输正常
-+ 
+
+## 已解决
+
++ 条件判断有误
+  + 没有做兜底
+
+
+
+# 04-**数据中心-法律法规：使用右侧条件进行筛选，切换到筛选结果最后一页时，会弹出所有的法律法规，不止限与当前筛选的条件；**
+
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200331152544953.png" alt="image-20200331152544953" style="zoom: 50%;" />![image-20200331152556887](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200331152556887.png)
+
+![image-20200331152647656](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200331152647656.png)
+
++ 发文单位发送请求的数据结构
+
+  + ![image-20200331153010914](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200331153010914.png)
+
+  + 三级数据，分别用三个数组存储
+
++ 适用范围发送请求的数据结构
+
+  + ![image-20200331153116818](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200331153116818.png)
+  + 二级数据，用二级的id拼接成的数组
+
+### **bug**
+
++ 第一次点击发文单位的选项时请求参数：
+  + ![image-20200331153528271](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200331153528271.png)
+  + 正常
+
++ 随机点击页码切换时参数：
+  + ![image-20200331153617856](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200331153617856.png)
+  + 参数切换成了使用范围的参数
+
++ 查看代码可知
+  + ![image-20200331153705264](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200331153705264.png)
+  + 切换页码始终获取的是适用范围的数据
+
++ 解决办法：
+  + ~~切换页面时判断当前是从哪里切来的？~~
+    + 无法进行判断
+      + 在切换发文单位和适用范围的时候进行清空
+  + 清除适用范围中的选项
+  + 传入发文单位的选项
+
++ 最终解决方案
+  + 发文单位触发时将参数储存起来
+  + 在点击页面时进行提取
+  + 在切换tab栏时清楚相反的数据内容
